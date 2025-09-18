@@ -1,16 +1,21 @@
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 4001
+const dotenv = require('dotenv');
+const PORT = process.env.PORT || 4002
 
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+dotenv.config();
 const { Sequelize } = require('sequelize');
-const sequelize = new Sequelize('joga_sequelize', 'root', 'qwerty', {
-  host: 'localhost',
-  dialect: 'mysql'
+const sequelize = new Sequelize(
+    process.env.DB_NAME, 
+    process.env.DB_USER, 
+    process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  dialect: process.env.DB_DRIVER
 });
 
 // Test the database connection
