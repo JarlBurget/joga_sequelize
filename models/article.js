@@ -11,40 +11,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Article.belongsTo(models.Author, {
+        foreignKey: 'author_id',
+        field: 'author_id',
+      });
     }
   }
   Article.init({
-    id: { 
+    id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false
     },
-    name: { 
+    name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    slug: { 
+    slug: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
     },
-    image: { 
+    image: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    body: { 
+    body: {
       type: DataTypes.TEXT,
       allowNull: false
     },
-    published: { 
+    published: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    author_id: DataTypes.INTEGER
+    author_id: {
+      type: DataTypes.INTEGER
+    }
   }, {
     sequelize,
     modelName: 'Article',
+    tableName: 'Articles',
+    freezeTableName: true,
   });
   return Article;
 };
