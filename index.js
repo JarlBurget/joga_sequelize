@@ -32,7 +32,10 @@ sequelize.authenticate()
 const articleRouter = require('./routes/article');
 const authorRouter = require('./routes/author');
 app.use('/', articleRouter);
-app.use('/author', authorRouter)
+app.use('/author', authorRouter);
+app.use('/admin/article', articleRouter);
+
+
 
 
 
