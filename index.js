@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
-const PORT = process.env.PORT || 4001
+const PORT = process.env.PORT || 4002
 
 
 // Middleware to parse JSON bodies
@@ -27,10 +27,11 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err);
   });
 
-// Example route that returns JSON
-app.get('/', (req, res) => {
-    res.json({ message: 'Welcome to the Express application!' });
-});
+
+// using routes and controllers
+const articleRouter = require('./routes/article');
+app.use('/', articleRouter);
+
 
 // Start the server
 app.listen(PORT, () => {
