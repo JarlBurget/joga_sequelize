@@ -29,6 +29,15 @@ module.exports = {
         published: '2060-05-28 15:02:55',
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        name: 'Secrets of a yoga teacher',
+        slug: 'secrets-of-a-yoga-teacher',
+        image: 'yoga-teacher.jpg',
+        body: '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>',
+        published: '2060-05-28 15:02:55',
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ]);
   },

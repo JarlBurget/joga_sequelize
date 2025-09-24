@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
-const PORT = process.env.PORT || 4002
+const PORT = process.env.PORT || 4001
 
 
 // Middleware to parse JSON bodies
