@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
-const PORT = process.env.PORT || 4006
+const PORT = process.env.PORT || 4010
 
 
 // Middleware to parse JSON bodies
@@ -30,8 +30,9 @@ sequelize.authenticate()
 
 // using routes and controllers
 const articleRouter = require('./routes/article');
+const authorRouter = require('./routes/author');
 app.use('/', articleRouter);
-app.use('/article', articleRouter)
+app.use('/author', authorRouter)
 
 
 
