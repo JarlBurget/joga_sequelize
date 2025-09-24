@@ -7,51 +7,36 @@ const models = require('../../models')
 
 // create new article into data table
 const createArticle = (req, res) => {
-    // get form data
-    let name = req.body.name
-    let slug = req.body.slug
-    let image = req.body.image
-    let body = req.body.body
+    let { name, slug, image, body } = req.body;
 
-    // create new article by Article model
-    const newArticle = models.Article.create({
-        // values for NOT NULL fields
-        // left -> data table fields, right -> values from form
-        name: name,
-        slug: slug,
-        image: image,
-        body: body,
-        // publish date generation
+    models.Article.create({
+        name,
+        slug,
+        image,
+        body,
         published: new Date().toISOString().slice(0, 19).replace('T', ' ')
     })
-        .then(article => {
-            return res.status(200).json({ message: 'New article is added' });
-        })
-        .catch(error => {
-            return res.status(500).send(error.message);
-        })
+    .then(article => res.status(200).json({ message: 'New article is added', article }))
+    .catch(error => res.status(500).send(error.message));
 };
 
 // edit an article in the data table
 const updateArticle = async (req, res) => {
     const { id } = req.params;
-    console.log('Request method:', req.method); // Log the request method
+    console.log('Request method:', req.method);
 
     if (req.method === 'GET') {
         try {
             const article = await models.Article.findByPk(id);
-            const authors = await models.Author.findAll({
-                attributes: ['id', 'name']
-            });
+            const authors = await models.Author.findAll({ attributes: ['id', 'name'] });
 
-            if (!article) {
-                return res.status(404).send('Article not found');
-            }
+            if (!article) return res.status(404).send('Article not found');
 
             res.status(200).json({ 
-                message: 'Article data is collecte for updated',
-                article: article
-             });
+                message: 'Article data collected for update',
+                article: article,
+                authors: authors
+            });
         } catch (error) {
             console.error('Error retrieving article data:', error);
             res.status(500).send('Error retrieving article data');
@@ -68,10 +53,7 @@ const updateArticle = async (req, res) => {
             const result = await models.Article.update(data, { where: { id } });
 
             if (result[0] > 0) {
-                res.status(200).json({ 
-                    message: 'Article is updated', 
-                    article: data 
-                });
+                res.status(200).json({ message: 'Article is updated', article: data });
             } else {
                 res.status(404).send('No rows updated - article not found or data not changed');
             }
@@ -81,7 +63,26 @@ const updateArticle = async (req, res) => {
     }
 };
 
+// delete an article by ID
+const deleteArticle = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const result = await models.Article.destroy({ where: { id } });
+
+        if (result) {
+            res.status(200).json({ message: `Article with ID ${id} deleted successfully` });
+        } else {
+            res.status(404).json({ message: `Article with ID ${id} not found` });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting article', error: error.message });
+    }
+};
+
 // export functions
 module.exports = {
-    createArticle, updateArticle
+    createArticle,
+    updateArticle,
+    deleteArticle
 };
